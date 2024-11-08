@@ -10,7 +10,7 @@ class TipoRopa {
         T_DUCHA: 'Toalla de Ducha',
         T_LAVABO: 'Toalla de Lavabo',
         ALFOMBRIN: 'Alfombrín',
-        COLCHA_VERANO: 'Colcha de Ventana'
+        COLCHA_VERANO: 'Colcha de Verano'
     };
 }
 
