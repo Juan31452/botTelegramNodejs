@@ -2,6 +2,7 @@
 import { Telegraf, session } from 'telegraf';
 
 import { mostrarMenuPrincipal, mostrarMenuHabitacion, manejarSeleccionHabitacion, mostrarMenuTipoRopa, menunumerico, mostrarAgregarMas, mostrarDatosHabitacion } from './FunctionsHostal.js';
+import {iniciarJuegoMemoria, manejarSeleccion} from './FunctionsMemory.js';
 import { Habitacion } from './Clases/Habitacion.js';
 import TipoRopa from './Clases/TipoRopa.js';
 import TipoEstado from './Clases/TipoEstado.js';
@@ -26,6 +27,10 @@ bot.hears('⬅️ Menu Principal', (ctx) => {
   mostrarMenuPrincipal(ctx); // Llama a la función para mostrar el menú de habitaciones
 });
 
+// Escucha "Menu" y redirige al menú principal
+bot.hears(/Menu/i, (ctx) => {
+  mostrarMenuPrincipal(ctx); // Llama a la función para mostrar el menú principal
+});
 
 // Maneja la selección de la habitación
 bot.hears(/002|101|102|201|202|203/, (ctx) => {
@@ -119,8 +124,16 @@ bot.hears('Lista', (ctx) => {
 
 // Juego de memoria
 bot.hears('Memoria', (ctx) => {
-  juegomemoria(ctx);
+  iniciarJuegoMemoria(ctx);
 });
+
+// Manejador para capturar los eventos de selección de las cartas mediante callback
+bot.action(/card_(\d+)/, (ctx) => {
+  const index = parseInt(ctx.match[1], 10); // Extrae el índice de la carta seleccionada
+  manejarSeleccion(ctx, index); // Llama a la función que procesa la selección
+  ctx.answerCbQuery(); // Limpia la acción para evitar mensajes de espera
+});
+
 
 // Inicia el bot
 bot.launch();
