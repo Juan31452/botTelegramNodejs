@@ -1,52 +1,27 @@
 import { Markup } from 'telegraf';
+import JuegoMemoria from './Clases/JuegoMemoria.js';
+import Margen from './Clases/Margen.js';
 
 // Estado de los juegos para cada usuario
 const juegos = {};
 
-// Inicializa el tablero y el estado del juego para un usuario específico
-const iniciarJuego = (ctx, chatId) => {
-  const emojis = ['🍎', '🍌', '🍒', '🍉', '🍇', '🍍', '🍑', '🥥'];
-  const tableroEmojis = [...emojis, ...emojis].sort(() => Math.random() - 0.5);
-
-  juegos[chatId] = {
-    tablero: tableroEmojis,
-    seleccionados: Array(16).fill('😊'),
-    paresEncontrados: [],
-    primeraSeleccion: null,
-    messageId: null,
-    startTime: Date.now(),
-    intervalo: null
-  };
-
-  // Iniciar el temporizador que actualiza el tablero cada segundo
-  juegos[chatId].intervalo = setInterval(() => actualizarTablero(ctx, chatId), 1000);
-};
-
-// Función para calcular el tiempo transcurrido en minutos y segundos
-const tiempoTranscurrido = (startTime) => {
-  const now = Date.now();
-  const diff = now - startTime;
-  const minutos = Math.floor(diff / 60000);
-  const segundos = Math.floor((diff % 60000) / 1000);
-  return `${minutos}m ${segundos}s`;
-};
-
 // Genera el teclado en línea de 4x4 basado en el estado actual del juego
 const actualizarTablero = async (ctx, chatId) => {
-  const { seleccionados, messageId, paresEncontrados, startTime } = juegos[chatId];
+  const juego = juegos[chatId];
+  const { seleccionados, messageId, paresEncontrados } = juego;
   const filas = [];
 
   for (let i = 0; i < seleccionados.length; i += 4) {
-    filas.push(seleccionados.slice(i, i + 4).map((emoji, idx) => 
-      Markup.button.callback(emoji, `card_${i + idx}`)
-    ));
+    filas.push(seleccionados.slice(i, i + 4).map((emoji, idx) => {
+      const margen = new Margen(emoji, '[',']'); // Agrega un borde decorativo
+      return Markup.button.callback(margen.conMargen(), `card_${i + idx}`);
+    }));
   }
-
   const teclado = Markup.inlineKeyboard(filas);
 
   // Texto superior que muestra los pares encontrados y el tiempo transcurrido
   const paresEncontradosCount = paresEncontrados.length / 2;
-  const tiempo = tiempoTranscurrido(startTime);
+  const tiempo = juego.tiempoTranscurrido(); // Usamos el método de la clase
   const textoTablero = `Tiempo: ${tiempo} | Pares encontrados: ${paresEncontradosCount}\nSeleccione Cuadro:`;
 
   // Edita el mensaje existente o envía uno nuevo si no existe
@@ -58,7 +33,7 @@ const actualizarTablero = async (ctx, chatId) => {
     }
   } else {
     const mensaje = await ctx.reply(textoTablero, teclado);
-    juegos[chatId].messageId = mensaje.message_id;
+    juego.messageId = mensaje.message_id;
   }
 };
 
@@ -94,22 +69,32 @@ export const manejarSeleccion = (ctx, index) => {
 
   // Verifica si el usuario ha encontrado todos los pares
   if (paresEncontrados.length === tablero.length) {
-    const tiempoFinal = tiempoTranscurrido(juego.startTime);
+    const tiempoFinal = juego.tiempoTranscurrido(juego.startTime);
     ctx.reply(`¡Felicidades! Has encontrado todos los pares en ${tiempoFinal} 🎉`);
     clearInterval(juego.intervalo); // Detener el temporizador
     delete juegos[chatId]; // Resetea el juego al completar
   }
 };
 
-// Función para iniciar un nuevo juego
+// Función para inicializar el juego y registrarlo en el sistema
+const iniciarJuego = (ctx, chatId) => {
+  const juego = new JuegoMemoria(ctx, chatId);
+  juegos[chatId] = juego;
+  return juego;
+};
+
+// Ejemplo de cómo usar la clase
 export const iniciarJuegoMemoria = (ctx) => {
   const chatId = ctx.chat.id;
-  
-  // Inicializa el estado del juego para el usuario específico
-  iniciarJuego(ctx, chatId);
 
-  // Muestra el tablero inicial al usuario
+  // Inicializa un nuevo juego para el usuario
+  const juego = iniciarJuego(ctx, chatId);
+
+  // Inicia el temporizador del juego
+  juego.iniciarTemporizador(actualizarTablero);
+
+  // Muestra el tablero inicial
   actualizarTablero(ctx, chatId);
-  
+
   ctx.reply("¡Juego de memoria iniciado! Selecciona dos cuadros para encontrar los pares.");
 };

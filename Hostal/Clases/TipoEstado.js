@@ -10,4 +10,4 @@ class TipoEstado {
     };
 }
 
-export default TipoEstado; // Asegúrate de que la exportación esté en una línea separada
+export default TipoEstado; 

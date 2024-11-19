@@ -1,11 +1,11 @@
 // Importación 
 import { Telegraf, session } from 'telegraf';
 
-import { mostrarMenuPrincipal, mostrarMenuHabitacion, manejarSeleccionHabitacion, mostrarMenuTipoRopa, menunumerico, mostrarAgregarMas, mostrarDatosHabitacion } from './FunctionsHostal.js';
-import {iniciarJuegoMemoria, manejarSeleccion} from './FunctionsMemory.js';
-import { Habitacion } from './Clases/Habitacion.js';
-import TipoRopa from './Clases/TipoRopa.js';
-import TipoEstado from './Clases/TipoEstado.js';
+import { mostrarMenuPrincipal, mostrarMenuHabitacion, manejarSeleccionHabitacion, mostrarMenuTipoRopa, menunumerico, mostrarAgregarMas, mostrarDatosHabitacion } from './Hostal/FunctionsHostal.js';
+import {iniciarJuegoMemoria, manejarSeleccion} from './memoria/FunctionsMemory.js';
+import { Habitacion } from './Hostal/Clases/Habitacion.js';
+import TipoRopa from './Hostal/Clases/TipoRopa.js';
+import TipoEstado from './Hostal/Clases/TipoEstado.js';
 
 
 // token de tu bot
