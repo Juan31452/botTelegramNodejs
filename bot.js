@@ -112,7 +112,7 @@ bot.hears(Object.values(TipoEstado.ESTADOS), (ctx) => {
 });
 
 // Opción de Limpieza
-bot.hears('Limpieza', (ctx) => {
+bot.hears('🧹 Limpieza', (ctx) => {
   mostrarMenuHabitacion(ctx); // Llama a la función para mostrar el menú de habitaciones
 });
 
@@ -123,7 +123,7 @@ bot.hears('Lista', (ctx) => {
 });
 
 // Juego de memoria
-bot.hears('Memoria', (ctx) => {
+bot.hears('🎮 Memoria', (ctx) => {
   iniciarJuegoMemoria(ctx);
 });
 

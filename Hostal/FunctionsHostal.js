@@ -6,15 +6,21 @@ import TipoRopa from './Clases/TipoRopa.js';
 
 // Función para mostrar el menú principal
 export const mostrarMenuPrincipal = (ctx) => {
-    ctx.reply(
-      `¡Hola, ${ctx.from.first_name}! Selecciona una opción:`,
-      Markup.keyboard([
-        ['Limpieza'],       // Opción de Limpieza
-        ['Memoria']         // Opción de juego de memoria
-      ]).resize().oneTime(false) // Asegura que los botones permanezcan en pantalla
-    );
-};
+  // Creamos un teclado personalizado con botones
+  const teclado = Markup.keyboard([
+    [Markup.button.text('🎮 Memoria')],
+    [Markup.button.text('🧹 Limpieza')]
+    //[Markup.button.text('🚪 Salir')]
+  ])
+    .resize() // Ajusta el tamaño del teclado al contenido
+    .oneTime(false); // Asegura que los botones permanezcan en pantalla
 
+  // Enviamos el mensaje con el teclado
+  ctx.reply(
+    `¡Hola, ${ctx.from.first_name}! Selecciona una opción:`,
+    teclado
+  );
+};
 // Menú de Limpieza
 export const mostrarMenuHabitacion = (ctx) => {
   ctx.reply(
