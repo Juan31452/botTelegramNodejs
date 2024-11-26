@@ -6,10 +6,19 @@ import {iniciarJuegoMemoria, manejarSeleccion} from './memoria/FunctionsMemory.j
 import { Habitacion } from './Hostal/Clases/Habitacion.js';
 import TipoRopa from './Hostal/Clases/TipoRopa.js';
 import TipoEstado from './Hostal/Clases/TipoEstado.js';
+import dotenv from 'dotenv';
 
+// Cargar las variables de entorno desde el archivo .env
+dotenv.config();
+
+// Verificar si el token está presente en el entorno
+if (!process.env.TELEGRAM_BOT_TOKEN) {
+  console.error('El token del bot no está configurado en el archivo .env');
+  process.exit(1); // Salir si no hay token
+}
 
 // token de tu bot
-const bot = new Telegraf('7866028825:AAG8karTtat_f5P6V179COvkYF9-H24S2vQ');
+const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
 // Configura el middleware de sesión
 bot.use(session());
