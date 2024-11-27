@@ -30,3 +30,6 @@ bot.launch();
 // Manejo de señales para detener el bot
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
+
+// Exportar el bot para poder usarlo en otros archivos
+export default bot;
