@@ -4,6 +4,13 @@ import { Habitacion } from './Clases/Habitacion.js';
 import TipoEstado from './Clases/TipoEstado.js';
 import TipoRopa from './Clases/TipoRopa.js';
 
+// Función para inicializar la sesión del usuario
+export const inicializarSesion = (ctx) => {
+  if (!ctx.session) ctx.session = {}; // Crea una sesión si no existe
+  ctx.session.tipoSeleccionado = null; // Reinicia la selección de tipo
+  ctx.session.habitacionSeleccionada = null; // Reinicia la selección de habitación
+};
+
 // Función para mostrar el menú principal
 export const mostrarMenuPrincipal = (ctx) => {
   // Creamos un teclado personalizado con botones

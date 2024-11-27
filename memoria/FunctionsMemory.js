@@ -1,5 +1,5 @@
 import { Markup } from 'telegraf';
-import JuegoMemoria from './Clases/JuegoMemoria.js';
+import JuegoMemoria from './Clases/JuegoMemorria.js';
 import Margen from './Clases/Margen.js';
 
 // Estado de los juegos para cada usuario

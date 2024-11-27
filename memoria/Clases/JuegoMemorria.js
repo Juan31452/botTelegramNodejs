@@ -1,4 +1,4 @@
- class JuegoMemoria {
+class JuegoMemoria {
     constructor(ctx, chatId) {
       this.chatId = chatId;
       this.ctx = ctx;
