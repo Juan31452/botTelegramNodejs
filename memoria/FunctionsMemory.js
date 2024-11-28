@@ -1,9 +1,12 @@
 import { Markup } from 'telegraf';
-import JuegoMemoria from './Clases/JuegoMemorria.js';
+import JuegoMemoria from './Clases/JuegoMemoria.js';
 import Margen from './Clases/Margen.js';
+import User from './Clases/User.js';
 
 // Estado de los juegos para cada usuario
 const juegos = {};
+const user = {};
+
 
 // Genera el teclado en línea de 4x4 basado en el estado actual del juego
 const actualizarTablero = async (ctx, chatId) => {
@@ -17,12 +20,17 @@ const actualizarTablero = async (ctx, chatId) => {
       return Markup.button.callback(margen.conMargen(), `card_${i + idx}`);
     }));
   }
+
   const teclado = Markup.inlineKeyboard(filas);
 
   // Texto superior que muestra los pares encontrados y el tiempo transcurrido
+  const id = ctx.chat.id; // Captura el ID del chat
+  const firstname = ctx.from.first_name; // Captura el nombre del usuario
+
+  const user = new User(id, firstname); // Instancia de User
   const paresEncontradosCount = paresEncontrados.length / 2;
   const tiempo = juego.tiempoTranscurrido(); // Usamos el método de la clase
-  const textoTablero = `Tiempo: ${tiempo} | Pares encontrados: ${paresEncontradosCount}\nSeleccione Cuadro:`;
+  const textoTablero = `${user}    ||   Tiempo: ${tiempo}   || Pares encontrados: ${paresEncontradosCount}\nSeleccione Cuadro:`;
 
   // Edita el mensaje existente o envía uno nuevo si no existe
   if (messageId) {

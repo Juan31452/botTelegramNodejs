@@ -30,8 +30,10 @@ class JuegoMemoria {
       const diff = now - this.startTime;
       const minutos = Math.floor(diff / 60000);
       const segundos = Math.floor((diff % 60000) / 1000);
-      return `${minutos}m ${segundos}s`;
+      return `${minutos}min ${segundos}seg`;
     }
+
+
   }
   
   export default JuegoMemoria;
